@@ -1,0 +1,25 @@
+version: '3'
+services:
+  neo4j:
+    build: .
+    container_name: neo4j
+    environment:
+      - NEO4J_AUTH=${NEO4J_USERNAME}/${PASSWORD}
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - $HOME/neo4j/data:/data
+    networks:
+      - neo4j_net
+  neo4j_java_interface:
+    container_name: neo4j_java_interface
+    build:
+      context: ./build/docker
+      dockerfile: Dockerfile
+    command: [ "bolt", "neo4j", "7687", "${NEO4J_USERNAME}", "${PASSWORD}" ]
+    networks:
+      - neo4j_net
+networks:
+  neo4j_net:
+    driver: bridge
