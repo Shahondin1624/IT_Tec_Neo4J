@@ -106,8 +106,8 @@ queries to show how Cypher works:
    attributes, so we don't name it `[:Type]`. Instead, we "collect" them into the variable `n` and later use the
    `COUNT()` operator to get the total number of relationships (which we remember being connections to other
    stations) for this station.
-2. In the next query we extend the previous one and thus encounter a new operator COLLECT`, which aggregates the
-   data stored in n` into a list. This allows us to show more detailed information than just counting the number of
+2. In the next query we extend the previous one and thus encounter a new operator `COLLECT`, which aggregates the
+   data stored in n into a list. This allows us to show more detailed information than just counting the number of
    relationships.
 3. Here we further specify the second query, by limiting the data we gather through the relationship. For this we use
    `*1..5` or `*n..m` where `n` is the lower limit and `m` the upper one. That means that we now allow
