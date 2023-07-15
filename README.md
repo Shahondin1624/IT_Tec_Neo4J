@@ -19,9 +19,8 @@ and then accepts (unchecked) queries directly typed into the console. This obvio
 
 1. A fast Graph-Database written in Java that is well known and offers many Libraries for a multitude of programming
    languages like Java, Python and Go. [Bolt](https://en.wikipedia.org/wiki/Bolt_(network_protocol)) is used to access
-   Neo4J
-   that way.
-2. It Has its own Query-Language [Cypher](https://neo4j.com/docs/cypher-cheat-sheet/5/auradb-enterprise/) that visually
+   Neo4J that way.
+2. It has its own Query-Language [Cypher](https://neo4j.com/docs/cypher-cheat-sheet/5/auradb-enterprise/) that visually
    represents the structure Graph-Databases are in
 3. Has a visualization tool [Bloom](https://neo4j.com/docs/bloom-user-guide/current/) that can show the data represented
    as Edges and Nodes in Clusters
@@ -32,14 +31,11 @@ and then accepts (unchecked) queries directly typed into the console. This obvio
 
 Graph Databases use a different approach in comparison to classic relational or even document-based databases.
 They are designed to handle complex relationships between data points, making them ideal for applications that require
-fast
-traversal of connected data. In relational or document-based databases extracting those relationships and the
-information
-describing it can become quite performance intensive, whereas graph databases are optimized for this. Use cases where
-graph databases excel would, for example, be social networks where modeling the different connections between people
-would
-be quite difficult in other database types. Another example would be maps, these are an excellent field to use graphs
-for.
+fast traversal of connected data. In relational or document-based databases extracting those relationships and the
+information describing it can become quite performance intensive, whereas graph databases are optimized for this. Use
+cases where graph databases excel would, for example, be social networks where modeling the different connections
+between people would be quite difficult in other database types. Another example would be maps, these are an excellent
+field to use graphs for.
 
 ### [Docker](https://en.wikipedia.org/wiki/Docker_(software))
 
@@ -66,26 +62,24 @@ also provided.
 ### About my simple Java-App
 
 I use the official [Neo4J-java-driver](https://neo4j.com/docs/java-manual/current/) to connect to the Neo4J database.
-The way a connection url string should look like is ```bolt://<ip-address>:<port>``` additionally an authentication
-token
-is required (this could be empty for no authentication or a username-password pair).  
+The way a connection url string should look like is ```bolt://<ip-address>:<port>```, additionally an authentication
+token is required (this could be empty for no authentication or a username-password pair).  
 For this, I used the [Fluent-Interface-Design-Pattern](https://en.wikipedia.org/wiki/Fluent_interface) to guide a
 potential adaptor through the process of initializing the connection.  
-Afterward, I read
-the ['init-schema'-script-file](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/src/main/resources/creation.cypher)
-and read its contents, using
-a [simple parser](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/src/main/java/queryfilehandling/QueryFileReader.java)
+Afterward, I read the
+['init-schema'-script-file](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/src/main/resources/creation.cypher)
+and read its contents, using a
+[simple parser](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/src/main/java/queryfilehandling/QueryFileReader.java)
 to turn its lines into the two queries. Then I run those against the database isolated into their own transaction.  
-After that, the init-schema step is finished and the app accepts queries via the console.
-Additionally, '[:STOP](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/src/main/java/console/ConsoleInterface.java)'
+After that, the init-schema step is finished and the app accepts queries via the console. Additionally,
+'[:STOP](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/src/main/java/console/ConsoleInterface.java)'
 can be requested, and then the app will shut down. This is done by attempting to analyze the line typed into the console
-and then determining an
-appropriate [action](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/src/main/java/console/Action.java).
+and then determining an appropriate
+[action](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/src/main/java/console/Action.java).
 This can be easily extended to support more or more fine-grained operations.  
-This application is built with [Gradle](https://gradle.org/). I use
-a [Gradle-Plugin](https://plugins.gradle.org/plugin/com.bmuschko.docker-java-application)
-to automatically generate a Dockerfile for the app and then bind it into my docker-compose file.  
-I also created
+This application is built with [Gradle](https://gradle.org/). I use a
+[Gradle-Plugin](https://plugins.gradle.org/plugin/com.bmuschko.docker-java-application) to automatically generate a
+Dockerfile for the app and then bind it into my docker-compose file. I also created
 an [IntelliJ-Run-Configuration](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/runconfigurations/Full-Build.run.xml)
 that executes the following steps:
 
@@ -105,17 +99,13 @@ queries:
 1. In this query, I ask for the direct-neighbor-count of each station. What's interesting is, while ```Alias```es
    and ```ORDER BY```    is the same as you would expect it from a relational database, the explicit use of ```RETURN```
    is unusual. Also, the relatively unique way Cipher works is shown in a short, concise way: You define your
-   starting-point, in
-   fact so quite literally, as you start from a node (in this case ```Station s```) where ```s``` allows us to access
-   the properties of the station later on. Then from there we "go", symbolized by the ```->``` operator, to another
-   node,
-   defining their relationship in between the ```[]``` brackets. As the relationship also has attributes, we can access
-   those by
-   naming the relationship. In this example however we don't care about the attributes, so we don't name
-   it ```[:Type]```.
-   Instead, we "collect" them into the variable ```n``` and later use the ```COUNT()``` operator to get the total number
-   of
-   relationships (which we remember being connections to other stations) for this station.
+   starting-point, in fact so quite literally, as you start from a node (in this case ```Station s```) where ```s```
+   allows us to access the properties of the station later on. Then from there we "go", symbolized by the ```->```
+   operator, to another node, defining their relationship in between the ```[]``` brackets. As the relationship also has
+   attributes, we can access those by naming the relationship. In this example however we don't care about the
+   attributes, so we don't name it ```[:Type]```. Instead, we "collect" them into the variable ```n``` and later use the
+   ```COUNT()``` operator to get the total number of relationships (which we remember being connections to other
+   stations) for this station.
 2. In the next query we extend the previous one and thus encounter a new operator ```COLLECT```, which aggregates the
    data stored in ```n``` into a list. This allows us to show more detailed information than just counting the number of
    relationships.
@@ -125,6 +115,5 @@ queries:
    relationship hopping goes to 1. Then we hop from ```B``` to ```C``` and now our count is 2 and so on. This stops,
    once we hopped five times from our initial node and thus we have gathered all stations that are reachable within the
    distance of a maximum of five hops.
-4. Now we want to show the cost (which could mean distance or time to travel) for all connections between two neighbors
+4. Now we want to show the cost (which could mean distance or time to travel) for all connections between two neighbors,
    so we need to explicitly name both stations ```s1: Station```, ```s2: Station``` and our relationship ```r: Type```.
-5. 

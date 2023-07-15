@@ -23,15 +23,15 @@ public class ConsoleInterface {
     public void loopAndAwaitInput() throws IOException {
         log.info("Starting interactive interface. Type in your unfiltered queries to run against db or ':STOP' to exit...");
         String line;
-        while ((line = input.readLine()) != null) {
+        while (true) {
+            line = input.readLine();
+            if (line == null) continue; //dirty hack to avoid container shutting down
             switch (handleLine(line)) {
                 case EXIT -> {
                     log.info("Shutting down console interface...");
                     return;
                 }
-                case QUERY -> {
-                    connection.runQuery(line);
-                }
+                case QUERY -> connection.runQuery(line);
             }
         }
     }

@@ -41,7 +41,7 @@ public class Main {
 
     private static CustomNeo4JConnection initializeConnection(String[] args) {
         if (args.length != 5) {
-            throw new IllegalArgumentException("Not 5 arguments provided!");
+            throw new IllegalArgumentException("Not 5 arguments provided! (" + args.length + ")");
         }
         String protocol = args[0];
         String ip = args[1];
@@ -53,8 +53,8 @@ public class Main {
         log.info("port: {}", port);
         log.info("username: {}", username);
         log.info("password: {}", password);
-        int retries = 0;
-        while (retries < 10) {
+        int retries = 1;
+        while (retries <= 10) {
             try {
                 return ConnectionBuilder.newConnection()
                         .withProtocol(protocol)
