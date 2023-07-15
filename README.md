@@ -7,7 +7,7 @@ My goal is to create a simple [Neo4J](https://neo4j.com/) setup that contains th
 For this, I created a simple
 [docker-compose file](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/neo4j.yml) that defines the Neo4J server
 and this simple Java-Application as 'services.'  
-Neo4J exposes a simple web interface can be accessed at ```http://localhost:7687``` and used to execute queries against
+Neo4J exposes a simple web interface can be accessed at `http://localhost:7687` and used to execute queries against
 the database.  
 Additionally, the Java-App allows connecting to Neo4J and then initially runs an
 ['init-schema'-script](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/src/main/resources/creation.cypher)
@@ -62,7 +62,7 @@ also provided.
 ### About my simple Java-App
 
 I use the official [Neo4J-java-driver](https://neo4j.com/docs/java-manual/current/) to connect to the Neo4J database.
-The way a connection url string should look like is ```bolt://<ip-address>:<port>```, additionally an authentication
+The way a connection url string should look like is `bolt://<ip-address>:<port>`, additionally an authentication
 token is required (this could be empty for no authentication or a username-password pair).  
 For this, I used the [Fluent-Interface-Design-Pattern](https://en.wikipedia.org/wiki/Fluent_interface) to guide a
 potential adaptor through the process of initializing the connection.  
@@ -89,31 +89,34 @@ that executes the following steps:
 4. spin up both containers with docker-compose
 
 Alternatively (in Linux) this could be done by running  
-```./gradlew dockerBuildImage && docker-compose -f neo4j.yml up -d```
+`./gradlew dockerBuildImage && docker-compose -f neo4j.yml up -d`
 
 ### Some queries I defined
 
 In [queries.cypher](https://github.com/Shahondin1624/IT_Tec_Neo4J/blob/master/Project/queries.cypher) I defined some
-queries:
+queries to show how Cypher works:
 
-1. In this query, I ask for the direct-neighbor-count of each station. What's interesting is, while ```Alias```es
-   and ```ORDER BY```    is the same as you would expect it from a relational database, the explicit use of ```RETURN```
+1. In this query, I ask for the direct-neighbor-count of each station. What's interesting is, while `Alias`es
+   and `ORDER BY`    is the same as you would expect it from a relational database, the explicit use of `RETURN`
    is unusual. Also, the relatively unique way Cipher works is shown in a short, concise way: You define your
-   starting-point, in fact so quite literally, as you start from a node (in this case ```Station s```) where ```s```
-   allows us to access the properties of the station later on. Then from there we "go", symbolized by the ```->```
-   operator, to another node, defining their relationship in between the ```[]``` brackets. As the relationship also has
+   starting-point, in fact so quite literally, as you start from a node (in this case `Station s`) where `s`
+   allows us to access the properties of the station later on. Then from there we "go", symbolized by the `->`
+   operator, to another node, defining their relationship in between the `[]` brackets. As the relationship also has
    attributes, we can access those by naming the relationship. In this example however we don't care about the
-   attributes, so we don't name it ```[:Type]```. Instead, we "collect" them into the variable ```n``` and later use the
-   ```COUNT()``` operator to get the total number of relationships (which we remember being connections to other
+   attributes, so we don't name it `[:Type]`. Instead, we "collect" them into the variable `n` and later use the
+   `COUNT()` operator to get the total number of relationships (which we remember being connections to other
    stations) for this station.
-2. In the next query we extend the previous one and thus encounter a new operator ```COLLECT```, which aggregates the
-   data stored in ```n``` into a list. This allows us to show more detailed information than just counting the number of
+2. In the next query we extend the previous one and thus encounter a new operator COLLECT`, which aggregates the
+   data stored in n` into a list. This allows us to show more detailed information than just counting the number of
    relationships.
 3. Here we further specify the second query, by limiting the data we gather through the relationship. For this we use
-   ```*1..5``` or ```*n..m``` where ```n``` is the lower limit and ```m``` the upper one. That means that we now allow
-   the reach of the relationship to extend, or in other words when we go from Node ```A``` to ```B``` our count of the
-   relationship hopping goes to 1. Then we hop from ```B``` to ```C``` and now our count is 2 and so on. This stops,
-   once we hopped five times from our initial node and thus we have gathered all stations that are reachable within the
+   `*1..5` or `*n..m` where `n` is the lower limit and `m` the upper one. That means that we now allow
+   the reach of the relationship to extend, or in other words when we go from Node `A` to `B` our count of the
+   relationship hopping goes to 1. Then we hop from `B` to `C` and now our count is 2 and so on. This stops,
+   once we hopped five times from our initial node, and thus we have gathered all stations that are reachable within the
    distance of a maximum of five hops.
 4. Now we want to show the cost (which could mean distance or time to travel) for all connections between two neighbors,
-   so we need to explicitly name both stations ```s1: Station```, ```s2: Station``` and our relationship ```r: Type```.
+   so we need to explicitly name both stations `s1: Station`, `s2: Station` and our relationship `r: Type`.
+5. Here we use the `WHERE` operator, which should be familiar to users of other database-types. In Cypher, conditions
+   have to be placed within `()` but can be combined using the usual `AND` or `OR` operators. As you can see the
+   `COLLECT` function used before is also able to collect into tuples which we do here.
