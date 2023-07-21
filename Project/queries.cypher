@@ -19,3 +19,8 @@ RETURN s1.StationName AS `Station 1`, s2.StationName AS `Station 2`, r.cost AS C
 MATCH (s:Station)-[r:Type]->(s1:Station)
   WHERE (s.StationName = 'S+U Berlin Hauptbahnhof') AND (r.cost < 500)
 RETURN s.StationName AS `Starting Station`, collect([s1.StationName, r.cost]) AS `Station - Cost`;
+//6: Show the length of all connected stations ordered shortest -> longest
+MATCH (s1:Station)-[r:Type]->(s2:Station)
+  WHERE (s1.StationName = 'S+U Berlin Hauptbahnhof')
+RETURN s1.StationName AS `Station 1`, s2.StationName AS `Station 2`, sum(r.cost) AS `Total Cost`
+  ORDER BY `Total Cost` ASC;

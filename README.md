@@ -120,3 +120,4 @@ queries to show how Cypher works:
 5. Here we use the `WHERE` operator, which should be familiar to users of other database-types. In Cypher, conditions
    have to be placed within `()` but can be combined using the usual `AND` or `OR` operators. As you can see the
    `COLLECT` function used before is also able to collect into tuples which we do here.
+6. In this query we use `SUM` to accumulate the total cost of the whole connection-line.
